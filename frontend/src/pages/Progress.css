@@ -1,0 +1,193 @@
+/* Progress.css */
+
+/* Container */
+.progress-container {
+  max-width: 950px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #111;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  padding-bottom: 30px;
+  animation: fadeIn 0.8s ease-in;
+  transition: background 0.5s, color 0.5s;
+}
+
+/* Dark theme container */
+body[data-theme='dark'] .progress-container {
+  background-color: rgba(30, 34, 30, 0.95);
+  color: #e0e0e0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Back button */
+.back-dashboard-btn {
+  background-color: #10b981; /* green */
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 20px 0;
+  transition: all 0.3s ease;
+}
+
+.back-dashboard-btn:hover {
+  background-color: #059669; /* darker green */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+body[data-theme='dark'] .back-dashboard-btn {
+  background-color: #2a7d4f;
+  color: #e0e0e0;
+}
+
+body[data-theme='dark'] .back-dashboard-btn:hover {
+  background-color: #1f563b;
+  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.5);
+}
+
+/* Headings */
+h2 {
+  text-align: center;
+  margin-bottom: 5px;
+  color: #10b981;
+  font-size: 50px;
+}
+
+body[data-theme='dark'] h2 {
+  color: #90ee90;
+}
+
+.progress-summary {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #065f46; /* dark green */
+  font-weight: 500;
+}
+
+body[data-theme='dark'] .progress-summary {
+  color: #b2f2bb;
+}
+
+/* Table styling */
+.progress-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: slideUp 0.8s ease-out;
+  transition: background 0.5s, color 0.5s;
+}
+
+.progress-table th,
+.progress-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #d1fae5;
+  transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s;
+}
+
+.progress-table th {
+  background-color: #10b981;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+body[data-theme='dark'] .progress-table th {
+  background-color: #2a7d4f;
+  color: #e0e0e0;
+}
+
+.progress-table tr:hover {
+  background-color: #dcfce7; /* light green hover */
+  transform: scale(1.02);
+}
+
+body[data-theme='dark'] .progress-table tr:hover {
+  background-color: rgba(76, 175, 80, 0.2);
+}
+
+/* Solved/Unsolved Status */
+.status {
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-align: center;
+  display: inline-block;
+  min-width: 70px;
+  transition: all 0.3s ease;
+}
+
+.status.solved {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status.unsolved {
+  background-color: #fef3c7;
+  color: #78350f;
+}
+
+body[data-theme='dark'] .status.solved {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #b2f2bb;
+}
+
+body[data-theme='dark'] .status.unsolved {
+  background-color: rgba(255, 165, 0, 0.2);
+  color: #ffd580;
+}
+
+/* Description under title */
+.question-description {
+  font-size: 14px;
+  color: #065f46;
+  margin-top: 4px;
+  display: block;
+  opacity: 0.9;
+}
+
+body[data-theme='dark'] .question-description {
+  color: #b2f2bb;
+}
+
+/* Loading / Not logged in message */
+.progress-container p {
+  text-align: center;
+  font-size: 16px;
+  color: #065f46;
+  margin-top: 50px;
+}
+
+body[data-theme='dark'] .progress-container p {
+  color: #e0e0e0;
+}
+
+/* Responsive Table */
+@media (max-width: 700px) {
+  .progress-table th,
+  .progress-table td {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(15px);}
+  100% { opacity: 1; transform: translateY(0);}
+}

@@ -1,0 +1,90 @@
+.welcome-screen {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  background: linear-gradient(135deg, #e0ffe0, #ffffff) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  animation: fadeInOut 4s ease-in-out forwards !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  color: #2c2c2c !important;
+  overflow: hidden !important;
+  text-align: center !important;
+  padding: 2rem !important;
+  box-sizing: border-box !important;
+  z-index: 9999 !important;
+  transition: background 0.5s, color 0.5s;
+}
+
+/* Dark theme */
+body[data-theme='dark'] .welcome-screen {
+  background: linear-gradient(135deg, #1c1f1c, #2c2f2c) !important;
+  color: #e0e0e0 !important;
+}
+
+.welcome-box {
+  animation: scaleIn 1s ease !important;
+}
+
+.welcome-title {
+  font-size: 3rem !important;
+  font-weight: bold !important;
+  margin-bottom: 1rem !important;
+  color: #2c2c2c !important;
+}
+
+body[data-theme='dark'] .welcome-title {
+  color: #90ee90 !important;
+}
+
+.welcome-title span {
+  color: #00c26e !important;
+  text-shadow: 0 0 10px #00c26e, 0 0 20px #00c26e !important;
+}
+
+body[data-theme='dark'] .welcome-title span {
+  color: #7fffd4 !important;
+  text-shadow: 0 0 10px #7fffd4, 0 0 20px #7fffd4 !important;
+}
+
+.welcome-quote {
+  font-size: 1.4rem !important;
+  font-style: italic !important;
+  color: #555 !important;
+  animation: fadeIn 2s ease-in-out !important;
+}
+
+body[data-theme='dark'] .welcome-quote {
+  color: #b2f2bb !important;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.95); }
+  10% { opacity: 1; transform: scale(1); }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 2rem !important;
+  }
+
+  .welcome-quote {
+    font-size: 1.1rem !important;
+  }
+}
