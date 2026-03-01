@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom'; // added because navigate is used
 import './WelcomeScreen.css';
 
 const WelcomeScreen = () => {
-  
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
 
