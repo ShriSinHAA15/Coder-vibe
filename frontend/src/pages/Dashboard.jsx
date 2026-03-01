@@ -9,7 +9,12 @@ import './Dashboard.css';
 
 const SOLVED_STORAGE_KEY = (userId) => `codevibe_solved_user_${userId || 'guest'}`;
 
-const Dashboard = ({ user }) => {
+const Dashboard = ({ user: propUser }) => {
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const user = propUser || storedUser;
+
+  const token = localStorage.getItem('token');
+
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [code, setCode] = useState('');
@@ -28,17 +33,24 @@ const Dashboard = ({ user }) => {
   useEffect(() => {
     const fetchQuestionsAndProgress = async () => {
       try {
-        const questionsRes = await API.get('/questions');
-        const fetchedQuestions = questionsRes.data || [];
+        const questionsRes = await API.get('/questions', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const fetchedQuestions = questionsRes?.data || [];
         setQuestions(fetchedQuestions);
 
         let solvedMap = {};
+
         if (user?.id) {
           try {
-            const progressRes = await API.get(`/progress/all/${user.id}`);
-            const solvedFromDB = progressRes.data
-              .filter((q) => q.solved === 1)
-              .map((q) => q.id);
+            const progressRes = await API.get(`/progress/all/${user.id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+
+            const solvedFromDB = progressRes?.data
+              ?.filter((q) => q.solved === 1)
+              ?.map((q) => q.id) || [];
 
             solvedFromDB.forEach((id) => (solvedMap[id] = true));
           } catch {
@@ -72,7 +84,7 @@ const Dashboard = ({ user }) => {
     };
 
     fetchQuestionsAndProgress();
-  }, [user, location.state]);
+  }, [user?.id, location.state, token]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -98,22 +110,27 @@ const Dashboard = ({ user }) => {
   };
 
   const runSubmission = async () => {
-    if (!questions.length) return;
+    if (!questions.length || !user?.id) return;
 
     const currentQ = questions[currentIndex];
-    if (!currentQ) return;
 
     setOutput('Running...');
     setMessage(null);
     setRunning(true);
 
     try {
-      const res = await API.post('/questions/submit', {
-        user_id: user?.id || 1,
-        question_id: currentQ.id,
-        code,
-        language,
-      });
+      const res = await API.post(
+        '/questions/submit',
+        {
+          user_id: user.id,
+          question_id: currentQ.id,
+          code,
+          language,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       const {
         output: out = '',
