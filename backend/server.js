@@ -24,12 +24,13 @@ app.get('/', (req, res) => {
   res.send('🚀 Code Vibe Backend is running!');
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 
 async function startServer() {
   try {
     await initDB();
     await testConnection();
+    console.log('✅ Database Connected');
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
@@ -37,7 +38,7 @@ async function startServer() {
 
   } catch (err) {
     console.error('❌ Server startup failed:', err);
-    process.exit(1); // 🔥 Important for Render
+    // ❌ Removed process.exit(1) so Render does not kill the app
   }
 }
 
