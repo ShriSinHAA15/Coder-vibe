@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // added because navigate is used
+import { useNavigate } from 'react-router-dom';
 import './WelcomeScreen.css';
 
 const WelcomeScreen = () => {
