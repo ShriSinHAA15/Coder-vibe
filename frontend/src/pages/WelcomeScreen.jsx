@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './WelcomeScreen.css';
 
 const WelcomeScreen = () => {
-  const location = useLocation();
+  
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
 
