@@ -1,6 +1,6 @@
 // src/pages/Dashboard.jsx
 import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import API from '../api';
 import confetti from 'canvas-confetti';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
@@ -25,32 +25,30 @@ const Dashboard = ({ user }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Fetch questions & progress
   useEffect(() => {
     const fetchQuestionsAndProgress = async () => {
       try {
-        const questionsRes = await axios.get('http://localhost:5000/api/questions');
+        const questionsRes = await API.get('/questions');
         const fetchedQuestions = questionsRes.data || [];
         setQuestions(fetchedQuestions);
 
         let solvedMap = {};
         if (user?.id) {
           try {
-            const progressRes = await axios.get(
-              `http://localhost:5000/api/progress/all/${user.id}`
-            );
+            const progressRes = await API.get(`/progress/all/${user.id}`);
             const solvedFromDB = progressRes.data
               .filter((q) => q.solved === 1)
               .map((q) => q.id);
+
             solvedFromDB.forEach((id) => (solvedMap[id] = true));
           } catch {
             const raw = localStorage.getItem(SOLVED_STORAGE_KEY(user?.id));
             if (raw) solvedMap = JSON.parse(raw);
           }
         }
+
         setSolved(solvedMap);
 
-        // ✅ Check if Progress.jsx sent us a questionId
         if (location.state?.questionId) {
           const qIndex = fetchedQuestions.findIndex(
             (q) => q.id === location.state.questionId
@@ -61,10 +59,10 @@ const Dashboard = ({ user }) => {
           }
         }
 
-        // Otherwise, go to first unsolved
         const firstUnsolvedIndex = fetchedQuestions.findIndex(
           (q) => !solvedMap[q.id]
         );
+
         setCurrentIndex(firstUnsolvedIndex >= 0 ? firstUnsolvedIndex : 0);
       } catch (err) {
         console.error(err);
@@ -72,6 +70,7 @@ const Dashboard = ({ user }) => {
         setLoading(false);
       }
     };
+
     fetchQuestionsAndProgress();
   }, [user, location.state]);
 
@@ -80,26 +79,15 @@ const Dashboard = ({ user }) => {
     localStorage.setItem(SOLVED_STORAGE_KEY(user.id), JSON.stringify(solved));
   }, [solved, user]);
 
-  // Confetti
   const triggerCelebration = () => {
     const duration = 1500;
     const animationEnd = Date.now() + duration;
     const colors = ['#90ee90', '#ffffff'];
+
     (function frame() {
-      confetti({
-        particleCount: 4,
-        angle: 60,
-        spread: 150,
-        origin: { x: 0 },
-        colors,
-      });
-      confetti({
-        particleCount: 4,
-        angle: 120,
-        spread: 150,
-        origin: { x: 1 },
-        colors,
-      });
+      confetti({ particleCount: 4, angle: 60, spread: 150, origin: { x: 0 }, colors });
+      confetti({ particleCount: 4, angle: 120, spread: 150, origin: { x: 1 }, colors });
+
       if (Date.now() < animationEnd) requestAnimationFrame(frame);
     })();
   };
@@ -109,9 +97,9 @@ const Dashboard = ({ user }) => {
     setTimeout(() => setFlashType(null), 4000);
   };
 
-  // Run code submission
   const runSubmission = async () => {
     if (!questions.length) return;
+
     const currentQ = questions[currentIndex];
     if (!currentQ) return;
 
@@ -120,7 +108,7 @@ const Dashboard = ({ user }) => {
     setRunning(true);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/questions/submit', {
+      const res = await API.post('/questions/submit', {
         user_id: user?.id || 1,
         question_id: currentQ.id,
         code,
@@ -133,6 +121,7 @@ const Dashboard = ({ user }) => {
         keywordMissing = false,
         requiredKeyword = '',
       } = res.data || {};
+
       setOutput(out);
 
       const normalize = (str) =>
@@ -141,6 +130,7 @@ const Dashboard = ({ user }) => {
           .split('\n')
           .map((line) => line.trim())
           .join('\n');
+
       const expected = normalize(currentQ.expected_output);
       const actual = normalize(out);
 
@@ -155,8 +145,10 @@ const Dashboard = ({ user }) => {
       } else {
         let errorText =
           '❌ Wrong answer — check the output carefully and try again.';
+
         if (keywordMissing)
           errorText = `❌ You must use the required keyword: "${requiredKeyword}" in your solution.`;
+
         setMessage({ type: 'error', text: errorText });
         triggerFlash('error');
       }
@@ -180,9 +172,11 @@ const Dashboard = ({ user }) => {
       alert('❌ Solve the current question before proceeding.');
       return;
     }
+
     const nextIndex = questions.findIndex(
       (q, idx) => idx > currentIndex && !solved[q.id]
     );
+
     if (nextIndex >= 0) {
       setCurrentIndex(nextIndex);
       setCode('');
@@ -207,6 +201,7 @@ const Dashboard = ({ user }) => {
 
   if (loading)
     return <div className="dashboard-loading">Loading questions...</div>;
+
   if (!questions.length)
     return <div className="dashboard-loading">No questions available.</div>;
 
@@ -215,7 +210,6 @@ const Dashboard = ({ user }) => {
 
   return (
     <div className={`dashboard-page ${theme}`}>
-      {/* Navbar */}
       <Navbar />
 
       <div className={`dashboard-container ${theme}`}>
@@ -242,9 +236,11 @@ const Dashboard = ({ user }) => {
         <h2 className="dashboard-title">
           Q{currentIndex + 1}: {question.title} {solved[question.id] && '✅'}
         </h2>
+
         <p className="dashboard-difficulty">
           <strong>Difficulty:</strong> {question.difficulty}
         </p>
+
         <pre className="dashboard-description">{question.description}</pre>
 
         {question.required_keywords && (
@@ -258,6 +254,7 @@ const Dashboard = ({ user }) => {
           <label>
             <strong>Select Language:</strong>{' '}
           </label>
+
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
@@ -286,9 +283,11 @@ const Dashboard = ({ user }) => {
           <button onClick={handleSubmit} disabled={running}>
             {running ? 'Running...' : 'Run Code'}
           </button>
+
           <button onClick={handlePrev} disabled={currentIndex === 0}>
             Previous
           </button>
+
           <button
             onClick={handleNext}
             disabled={!solved[question.id]}
