@@ -2,66 +2,109 @@
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { getDB } = require('../db'); // ✅ import getDB
+const { getDB } = require('../db');
 
 // ==================== REGISTER ====================
 exports.register = async (req, res) => {
-  const db = req.db || getDB(); // ✅ fallback if req.db is missing
+  const db = req.db || getDB();
   const { username, email, password } = req.body;
 
   try {
-    const [existing] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (existing.length > 0) {
-      return res.status(400).json({ message: 'User already exists' });
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
+    // check if user exists
+    const [existingUser] = await db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
+
+    if (existingUser.length > 0) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [
-      username,
-      email,
-      hashedPassword,
-    ]);
+    // insert user
+    await db.query(
+      "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+      [username, email, hashedPassword]
+    );
 
-    res.status(201).json({ message: 'Registration successful' });
-  } catch (err) {
-    console.error('Registration error:', err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(201).json({
+      success: true,
+      message: "Registration successful"
+    });
+
+  } catch (error) {
+    console.error("Register error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 };
 
 // ==================== LOGIN ====================
 exports.login = async (req, res) => {
-  const db = req.db || getDB(); // ✅ fallback if req.db is missing
+  const db = req.db || getDB();
   const { email, password } = req.body;
 
   try {
-    const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    }
+
+    // find user
+    const [users] = await db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
+
     if (users.length === 0) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password"
+      });
     }
 
     const user = users[0];
-    const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+    // compare password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password"
+      });
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'secretkey', {
-      expiresIn: '1d',
-    });
+    // create token
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET || "secretkey",
+      { expiresIn: "24h" }
+    );
 
-    res.json({
-      token,
+    res.status(200).json({
+      success: true,
+      token: token,
       user: {
         id: user.id,
         username: user.username,
-        email: user.email,
-      },
+        email: user.email
+      }
     });
-  } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ message: 'Server error' });
+
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 };
