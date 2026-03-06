@@ -23,30 +23,18 @@ const About = () => {
         <section className="about-card animate-float-left">
           <h2>💡 What is Code Vibe?</h2>
           <p>
-            <strong>Code Vibe</strong> is an interactive coding platform designed for
-            developers of all levels. Solve challenges from easy to hard, track your
-            progress, and grow your problem-solving skills in a gamified environment.
-          </p>
-        </section>
-
-        <section className="about-card animate-float-right delay-1">
-          <h2>🎯 Aim of the Project</h2>
-          <p>
-            Our mission is to provide a structured, fun, and rewarding coding experience.
-            Unlock challenges as you progress, track your stats, and compete with
-            yourself or others — making learning coding measurable and exciting.
+            <strong>Code Vibe</strong> is an interactive coding platform designed for developers of all levels. Our mission is to make coding enjoyable and meaningful, helping users strengthen their problem-solving skills and confidence. By solving challenges from easy to hard, tracking your progress, and practicing consistently, you can prepare effectively for technical interviews and real-world programming tasks. We believe that consistent practice and hands-on coding experience are the keys to success, and our platform provides a simple, structured, and motivating way to grow as a developer. Whether you are just starting out or aiming to land your dream job, Code Vibe encourages you to learn, experiment, and improve every day.
           </p>
         </section>
 
         <section className="about-card animate-float-left delay-2">
           <h2>👩‍💻 Project Owner</h2>
           <div className="owner-details">
-            <p><strong>Name:</strong> Shri Sinha</p>
+            <p><strong>Name:</strong> Shristy Sinha</p>
             <p>
               <strong>Email:</strong>{' '}
               <a href="mailto:shristysinha80921@gmail.com">shristysinha80921@gmail.com</a>
             </p>
-            <p><strong>Role:</strong> Full Stack Developer & Project Creator</p>
           </div>
         </section>
 
