@@ -11,21 +11,30 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user'); 
+    localStorage.removeItem('token');
     navigate('/login');
   };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${theme}`}>
       <div className="navbar-left">
-        {/* ✅ Use imported image */}
+        {/* ✅ Logo and title */}
         <img src={logo} alt="Code Vibe Logo" className="navbar-logo" />
         <span className="navbar-title">CODE-VIBE</span>
       </div>
 
       <div className="navbar-right">
+        {/* About Page Link */}
+        <button className="navbar-btn" onClick={() => navigate('/about')}>
+          About
+        </button>
+
+        {/* Theme Toggle */}
         <button className="navbar-btn" onClick={toggleTheme}>
           {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
         </button>
+
+        {/* Logout */}
         <button className="navbar-btn logout-btn" onClick={handleLogout}>
           Logout
         </button>

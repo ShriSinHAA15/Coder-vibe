@@ -6,6 +6,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import About from './pages/About';
 import Dashboard from './pages/Dashboard';
 import Question from './pages/Question';
 import Progress from './pages/Progress';
@@ -72,6 +73,7 @@ function App() {
             path="*"
             element={<Navigate to={user ? '/welcome' : '/login'} />}
           />
+          <Route path="/about" element={<About />} />
         </Routes>
       </Router>
     </ThemeProvider>
