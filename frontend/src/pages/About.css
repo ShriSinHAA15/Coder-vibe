@@ -1,66 +1,74 @@
-/* Layout & Page */
 .about-page {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
   padding-bottom: 50px;
-  background: linear-gradient(135deg, #e0ffe0, #ffffff);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.about-page.light {
+  background-color: #f0f8ff;
+  color: #222;
+}
+
+.about-page.dark {
+  background-color: #121212;
+  color: #f0f0f0;
 }
 
 .about-hero {
   text-align: center;
-  padding: 50px 20px 30px;
+  margin: 50px 20px 80px;
 }
 
 .about-title {
   font-size: 3rem;
-  color: #32cd32; /* green heading */
-  margin-bottom: 10px;
+  color: #2ecc71; /* Green heading */
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
 
 .about-subtitle {
-  font-size: 1.4rem;
-  color: #333;
-  max-width: 800px;
-  margin: 0 auto;
+  font-size: 1.5rem;
+  color: #555;
 }
 
-/* Cards Layout */
+/* Cards container */
 .about-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px;
-  padding: 20px;
+  margin: 0 20px;
 }
 
 .about-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255,255,255,0.05);
   border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   padding: 25px;
-  max-width: 450px;
-  flex: 1 1 400px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 400px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  transition: transform 0.6s, background-color 0.5s, color 0.5s;
+  position: relative;
 }
 
 .about-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  transform: translateY(-10px) scale(1.02);
 }
 
 .about-card h2 {
-  color: #32cd32;
+  font-size: 1.8rem;
   margin-bottom: 15px;
+  color: #2ecc71;
 }
 
+/* Owner details */
 .owner-details p {
   margin: 5px 0;
 }
 
 .owner-details a {
-  color: #32cd32;
+  color: #2ecc71;
   text-decoration: none;
 }
 
@@ -68,84 +76,61 @@
   text-decoration: underline;
 }
 
-/* Animations */
-.animate-fade-in {
-  animation: fadeIn 1s ease forwards;
+/* Left and right floating animation */
+.left-card {
+  animation: float-left 2s ease-in-out infinite alternate;
 }
 
-.animate-slide-in {
-  animation: slideIn 1s ease forwards;
+.right-card {
+  animation: float-right 2s ease-in-out infinite alternate;
 }
 
-.animate-float-left {
-  animation: floatLeft 3s ease-in-out infinite alternate;
+@keyframes float-left {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
 }
 
-.animate-float-right {
-  animation: floatRight 3s ease-in-out infinite alternate;
+@keyframes float-right {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
 }
 
 /* Background bubbles */
 .background-bubbles {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: -1;
 }
 
 .bubble {
   position: absolute;
+  bottom: -100px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(46, 204, 113, 0.4);
   border-radius: 50%;
-  opacity: 0.5;
-  background: #32cd32;
-  width: 40px;
-  height: 40px;
-  animation: float 20s infinite ease-in-out;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  animation: rise 15s infinite ease-in;
 }
 
-/* Glowing effect on hover */
-.bubble:hover {
-  transform: scale(1.5);
-  opacity: 0.8;
-  box-shadow: 0 0 20px #32cd32, 0 0 40px #32cd32, 0 0 60px #90ee90;
-}
+.bubble-1 { left: 5%; animation-duration: 12s; width: 25px; height: 25px; }
+.bubble-2 { left: 15%; animation-duration: 18s; width: 15px; height: 15px; }
+.bubble-3 { left: 25%; animation-duration: 20s; width: 20px; height: 20px; }
+.bubble-4 { left: 35%; animation-duration: 22s; width: 30px; height: 30px; }
+.bubble-5 { left: 45%; animation-duration: 19s; width: 18px; height: 18px; }
+.bubble-6 { left: 55%; animation-duration: 25s; width: 25px; height: 25px; }
+.bubble-7 { left: 65%; animation-duration: 20s; width: 15px; height: 15px; }
+.bubble-8 { left: 75%; animation-duration: 23s; width: 22px; height: 22px; }
+.bubble-9 { left: 85%; animation-duration: 17s; width: 28px; height: 28px; }
+.bubble-10 { left: 92%; animation-duration: 21s; width: 18px; height: 18px; }
+.bubble-11 { left: 10%; animation-duration: 24s; width: 20px; height: 20px; }
+.bubble-12 { left: 50%; animation-duration: 16s; width: 22px; height: 22px; }
 
-/* Floating animations */
-@keyframes float {
-  0% { transform: translateY(0px) translateX(0px); }
-  50% { transform: translateY(-20px) translateX(15px); }
-  100% { transform: translateY(0px) translateX(-15px); }
-}
-
-@keyframes floatLeft {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px) translateX(-10px); }
-  100% { transform: translateY(0px); }
-}
-
-@keyframes floatRight {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px) translateX(10px); }
-  100% { transform: translateY(0px); }
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-  0% { opacity: 0; transform: translateX(-50px); }
-  100% { opacity: 1; transform: translateX(0); }
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .about-container {
-    flex-direction: column;
-    align-items: center;
-  }
+@keyframes rise {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
 }
