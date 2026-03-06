@@ -19,8 +19,8 @@ const About = () => {
       </div>
 
       <div className="about-container">
-        {/* Project Description */}
-        <section className="about-card animate-zoom-in">
+        {/* Cards */}
+        <section className="about-card animate-float-left">
           <h2>💡 What is Code Vibe?</h2>
           <p>
             <strong>Code Vibe</strong> is an interactive coding platform designed for
@@ -29,8 +29,7 @@ const About = () => {
           </p>
         </section>
 
-        {/* Aim */}
-        <section className="about-card animate-zoom-in delay-1">
+        <section className="about-card animate-float-right delay-1">
           <h2>🎯 Aim of the Project</h2>
           <p>
             Our mission is to provide a structured, fun, and rewarding coding experience.
@@ -39,8 +38,7 @@ const About = () => {
           </p>
         </section>
 
-        {/* Owner */}
-        <section className="about-card animate-zoom-in delay-2">
+        <section className="about-card animate-float-left delay-2">
           <h2>👩‍💻 Project Owner</h2>
           <div className="owner-details">
             <p><strong>Name:</strong> Shri Sinha</p>
@@ -52,22 +50,20 @@ const About = () => {
           </div>
         </section>
 
-        {/* Footer / Tech Stack */}
-        <section className="about-card animate-zoom-in delay-3">
+        <section className="about-card animate-float-right delay-3">
           <h2>🛠 Built With</h2>
           <p>
-            React, Node.js, MySQL, CSS Animations, and a sprinkle of creativity.  
-            Code Vibe is continuously evolving — your feedback fuels improvement!
+            React, Node.js, MySQL, CSS Animations, and creativity.  
+            Code Vibe evolves continuously — your feedback fuels improvement!
           </p>
         </section>
       </div>
 
-      {/* Animated background shapes */}
-      <div className="background-shapes">
-        <span className="shape shape-1"></span>
-        <span className="shape shape-2"></span>
-        <span className="shape shape-3"></span>
-        <span className="shape shape-4"></span>
+      {/* Animated background bubbles */}
+      <div className="background-bubbles">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <span key={i} className={`bubble bubble-${i + 1}`}></span>
+        ))}
       </div>
     </div>
   );

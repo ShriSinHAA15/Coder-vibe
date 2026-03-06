@@ -1,10 +1,10 @@
 /* src/pages/About.css */
 .about-page {
   min-height: 100vh;
-  padding-bottom: 50px;
   position: relative;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
+  padding-bottom: 50px;
 }
 
 .about-page.light {
@@ -17,6 +17,7 @@
   color: #f0f0f0;
 }
 
+/* Hero Section */
 .about-hero {
   text-align: center;
   padding: 80px 20px 40px;
@@ -25,7 +26,7 @@
 .about-title {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  background: linear-gradient(90deg, #00b894, #55efc4); /* ✅ green gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 10px;
@@ -36,12 +37,13 @@
   color: #555;
 }
 
+/* Container & Cards */
 .about-container {
   max-width: 900px;
   margin: 0 auto;
-  display: grid;
-  grid-gap: 40px;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
 .about-card {
@@ -50,6 +52,8 @@
   border-radius: 15px;
   box-shadow: 0 15px 30px rgba(0,0,0,0.1);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
+  position: relative;
+  width: 60%;
 }
 
 .about-page.dark .about-card {
@@ -58,82 +62,58 @@
 }
 
 .about-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-10px) scale(1.02);
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
 }
 
-.about-card h2 {
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-  color: #2575fc;
+/* Alternate floating cards */
+.animate-float-left {
+  align-self: flex-start;
+  animation: floatLeft 1s ease forwards;
 }
 
-.owner-details a {
-  color: #6a11cb;
-  text-decoration: none;
+.animate-float-right {
+  align-self: flex-end;
+  animation: floatRight 1s ease forwards;
 }
 
-.owner-details a:hover {
-  text-decoration: underline;
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
+.delay-3 { animation-delay: 0.9s; }
+
+@keyframes floatLeft {
+  0% { opacity: 0; transform: translateX(-50px); }
+  100% { opacity: 1; transform: translateX(0); }
 }
 
-/* Animations */
-.animate-fade-in {
-  opacity: 0;
-  animation: fadeIn 1.5s forwards;
+@keyframes floatRight {
+  0% { opacity: 0; transform: translateX(50px); }
+  100% { opacity: 1; transform: translateX(0); }
 }
 
-.animate-slide-in {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: slideIn 1.2s forwards 0.5s;
-}
-
-.animate-zoom-in {
-  opacity: 0;
-  transform: scale(0.95);
-  animation: zoomIn 1s forwards;
-}
-
-.delay-1 {
-  animation-delay: 0.3s;
-}
-
-.delay-2 {
-  animation-delay: 0.6s;
-}
-
-.delay-3 {
-  animation-delay: 0.9s;
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-@keyframes slideIn {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes zoomIn {
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Background shapes */
-.background-shapes span.shape {
+/* Background bubbles */
+.background-bubbles span.bubble {
   position: absolute;
   border-radius: 50%;
   opacity: 0.15;
-  animation: floatShape 10s infinite alternate;
+  animation: floatBubble linear infinite;
 }
 
-.shape-1 { width: 150px; height: 150px; background: #2575fc; top: 50px; left: -50px; }
-.shape-2 { width: 100px; height: 100px; background: #6a11cb; top: 200px; right: -40px; }
-.shape-3 { width: 200px; height: 200px; background: #6a11cb; bottom: -50px; left: 100px; }
-.shape-4 { width: 120px; height: 120px; background: #2575fc; bottom: 100px; right: 120px; }
+.bubble-1 { width: 120px; height: 120px; background: #00b894; top: 10%; left: 5%; animation-duration: 12s; }
+.bubble-2 { width: 80px; height: 80px; background: #55efc4; top: 20%; left: 80%; animation-duration: 10s; }
+.bubble-3 { width: 60px; height: 60px; background: #00b894; top: 60%; left: 20%; animation-duration: 14s; }
+.bubble-4 { width: 150px; height: 150px; background: #55efc4; top: 70%; left: 60%; animation-duration: 18s; }
+.bubble-5 { width: 100px; height: 100px; background: #00b894; top: 40%; left: 40%; animation-duration: 16s; }
+.bubble-6 { width: 50px; height: 50px; background: #55efc4; top: 80%; left: 10%; animation-duration: 12s; }
+.bubble-7 { width: 140px; height: 140px; background: #00b894; top: 15%; left: 60%; animation-duration: 20s; }
+.bubble-8 { width: 70px; height: 70px; background: #55efc4; top: 35%; left: 75%; animation-duration: 10s; }
+.bubble-9 { width: 90px; height: 90px; background: #00b894; top: 50%; left: 30%; animation-duration: 14s; }
+.bubble-10 { width: 60px; height: 60px; background: #55efc4; top: 65%; left: 50%; animation-duration: 12s; }
+.bubble-11 { width: 100px; height: 100px; background: #00b894; top: 80%; left: 70%; animation-duration: 16s; }
+.bubble-12 { width: 80px; height: 80px; background: #55efc4; top: 90%; left: 20%; animation-duration: 18s; }
 
-@keyframes floatShape {
+@keyframes floatBubble {
   0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-30px) rotate(45deg); }
+  50% { transform: translateY(-50px) rotate(45deg); }
   100% { transform: translateY(0) rotate(0deg); }
 }
