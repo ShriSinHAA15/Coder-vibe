@@ -1,35 +1,31 @@
-const mysql = require('mysql2/promise');
+const { Pool } = require('pg');
 const dotenv = require('dotenv');
 dotenv.config();
 
-let db;
+let pool;
 
-async function initDB() {
-  if (db) return db;
+function initDB() {
+  if (pool) return pool;
 
-  db = await mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: Number(process.env.DB_PORT), // ensure numeric
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
   });
 
-  console.log('✅ MySQL pool created');
-  return db;
+  console.log('✅ PostgreSQL pool created');
+  return pool;
 }
 
 function getDB() {
-  return db;
+  return pool;
 }
 
 async function testConnection() {
   try {
-    const pool = await initDB();
-    await pool.query('SELECT 1');
+    const db = initDB();
+    await db.query('SELECT 1');
     console.log('✅ DB test succeeded');
   } catch (err) {
     console.error('❌ DB test failed:', err);
