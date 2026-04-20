@@ -19,6 +19,9 @@ function initDB() {
 }
 
 function getDB() {
+  if (!pool) {
+    return initDB();
+  }
   return pool;
 }
 

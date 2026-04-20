@@ -6,56 +6,69 @@ const { getDB } = require('../db');
 
 // ==================== REGISTER ====================
 exports.register = async (req, res) => {
-  const db = req.db || getDB();
+  const db = getDB(); // no need for req.db
   const { username, email, password } = req.body;
 
   try {
+    // validation
     if (!username || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required"
+      });
     }
 
     // check if user exists
-    const result = await db.query(
+    const existingUserResult = await db.query(
       "SELECT * FROM users WHERE email = $1",
       [email]
     );
 
-    if (result.rows.length > 0) {
-      return res.status(400).json({ message: "User already exists" });
+    if (existingUserResult.rows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists"
+      });
     }
 
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // insert user
-    await db.query(
-      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
+    const insertResult = await db.query(
+      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email",
       [username, email, hashedPassword]
     );
 
+    const newUser = insertResult.rows[0];
+
     res.status(201).json({
       success: true,
-      message: "Registration successful"
+      message: "Registration successful",
+      user: newUser
     });
 
   } catch (error) {
-    console.error("Register error:", error);
+    console.error("❌ Register error:", error.message);
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Server error during registration"
     });
   }
 };
 
 // ==================== LOGIN ====================
 exports.login = async (req, res) => {
-  const db = req.db || getDB();
+  const db = getDB();
   const { email, password } = req.body;
 
   try {
-
+    // validation
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
+      return res.status(400).json({
+        success: false,
+        message: "Email and password required"
+      });
     }
 
     // find user
@@ -74,9 +87,9 @@ exports.login = async (req, res) => {
     const user = result.rows[0];
 
     // compare password
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!passwordMatch) {
+    if (!isMatch) {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password"
@@ -92,7 +105,8 @@ exports.login = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      token: token,
+      message: "Login successful",
+      token,
       user: {
         id: user.id,
         username: user.username,
@@ -101,10 +115,10 @@ exports.login = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("❌ Login error:", error.message);
     res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Server error during login"
     });
   }
 };
